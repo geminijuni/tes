@@ -10,6 +10,7 @@
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
   font-family:'Inter',sans-serif;
   background:#0f0f14;
@@ -17,7 +18,7 @@ body{
   text-align:center;
 }
 
-/* HERO */
+/* HERO / OPENING */
 .hero{
   height:100vh;
   background:url('assets/cover.jpg') center/cover no-repeat;
@@ -43,11 +44,24 @@ body{
 }
 .hero h1{
   font-family:'Playfair Display',serif;
-  font-size:60px;
+  font-size:56px;
   margin:15px 0;
 }
 .hero .date{
   font-size:18px;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:30px;
+  padding:14px 36px;
+  border:none;
+  border-radius:50px;
+  background:#6c63ff;
+  color:#fff;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
 }
 
 /* SECTION */
@@ -78,10 +92,6 @@ h2{
 .gallery img{
   width:100%;
   border-radius:14px;
-  transition:.4s;
-}
-.gallery img:hover{
-  transform:scale(1.05);
 }
 
 /* RSVP */
@@ -127,29 +137,29 @@ footer{
 </head>
 <body>
 
-<!-- HERO -->
+<!-- OPENING -->
 <section class="hero">
   <div class="hero-content">
     <p class="subtitle">THE WEDDING OF</p>
     <h1 id="names">Dedi & Bunga</h1>
     <p class="date" id="dateText">20 Desember 2025</p>
+
+    <button class="btn" onclick="openInvitation()">Buka Undangan</button>
   </div>
 </section>
 
-<!-- EVENT -->
-<section class="section fade">
+<!-- ISI UNDANGAN -->
+<section id="undangan" class="section fade">
   <h2>Wedding Day</h2>
-  <p id="timeText">10.00 WIB</p>
+  <p id="timeText">Pukul 10.00 WIB</p>
   <p id="venueText">Gedung Serbaguna Modern</p>
 </section>
 
-<!-- COUNTDOWN -->
 <section class="section dark fade">
   <h2>Countdown</h2>
   <div class="countdown" id="countdown"></div>
 </section>
 
-<!-- GALLERY -->
 <section class="section fade">
   <h2>Our Moments</h2>
   <div class="gallery">
@@ -159,7 +169,6 @@ footer{
   </div>
 </section>
 
-<!-- RSVP -->
 <section class="section dark fade">
   <h2>RSVP</h2>
   <form class="rsvp">
@@ -178,12 +187,12 @@ footer{
 </footer>
 
 <!-- MUSIC -->
-<audio autoplay loop>
+<audio id="music" loop>
   <source src="music1.mp3.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-// ===== DATA (PEMBELI EDIT DI SINI) =====
+// DATA
 const wedding = {
   groom:"Dedi Pratama",
   bride:"Bunga Maharani",
@@ -200,6 +209,16 @@ document.getElementById("dateText").innerText = wedding.date;
 document.getElementById("timeText").innerText = wedding.time;
 document.getElementById("venueText").innerText = wedding.venue;
 
+// MUSIC + SCROLL
+const music = document.getElementById("music");
+music.volume = 0.4;
+
+function openInvitation(){
+  music.play();
+  document.getElementById("undangan")
+    .scrollIntoView({behavior:"smooth"});
+}
+
 // COUNTDOWN
 const target = new Date(wedding.eventDate).getTime();
 const cd = document.getElementById("countdown");
@@ -207,12 +226,10 @@ const cd = document.getElementById("countdown");
 setInterval(()=>{
   const now = new Date().getTime();
   const diff = target - now;
-
   const d = Math.floor(diff/(1000*60*60*24));
   const h = Math.floor((diff/(1000*60*60))%24);
   const m = Math.floor((diff/(1000*60))%60);
   const s = Math.floor((diff/1000)%60);
-
   cd.innerHTML = `${d} Hari ${h} Jam ${m} Menit ${s} Detik`;
 },1000);
 
